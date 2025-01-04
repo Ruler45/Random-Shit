@@ -1,11 +1,23 @@
+"use client"
 
 import { BackgroundLines } from "@/components/ui/background-lines";
 import { ModeToggle } from "@/components/ui/modeToggle";
 import Image from "next/image";
 import Sidebar from "./components/Sidebar";
 import RandomShit from "./components/Random";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Home() {
+  const [random,setRandom]= useState([]);
+  const fetchRandom= async()=>{
+    const {data}= await axios.get("/api/shit");
+    console.log(data)
+    setRandom(data.data);
+  }
+  useEffect(()=>{
+    fetchRandom();
+  },[])
   return (
     <div className="flex flex-col  items-center justify-items-center min-h-screen pb-4  gap-4 sm:p-2 font-[family-name:var(--font-geist-sans)] ">
       <nav className="fixed top-0 right-0 m-4 z-10">
@@ -21,9 +33,9 @@ export default function Home() {
             Scroll down to find out.
           </p>
         </BackgroundLines>
-        <RandomShit/>
+        <RandomShit random={random}/>
       </main>
-      <Sidebar/>
+      <Sidebar random={random}/>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"

@@ -22,7 +22,7 @@ import Loader from "./loader";
 const AddButton = () => {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
-  const [desciption, setDesciption] = useState("");
+  const [description, setDescription] = useState("");
   const [link, setLink] = useState("");
 
   const handleSubmit = async () => {
@@ -30,14 +30,15 @@ const AddButton = () => {
     try {
       const res = await axios.post("/api/shit", {
         title,
-        desciption,
-        link,
+        description,
+        link
       });
-      if (res.status !== 200) {
+      if (res.status !== 201) {
         toast("Shit Added successfully");
       }
     } catch (error) {
-      toast("Something went wrong");
+      // toast(error.json().message);
+      toast(error.response.data.message);
     } finally {
       setLoading(false);
     }
@@ -76,7 +77,7 @@ const AddButton = () => {
             <Input
               id="description"
               placeholder="This shit is absolute shit"
-              onChange={(e) => setDesciption(e.target.value)}
+              onChange={(e) => setDescription(e.target.value)}
               className="col-span-3"
             />
           </div>
